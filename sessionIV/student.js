@@ -5,3 +5,5 @@ class Student{
         this.regno = regno;
     }
 }
+
+module.exports = Student;
