@@ -7,7 +7,7 @@ app.use(express.json);
 app.use(express.urlencoded({extended:true}));
 app.use(reqLogger)
 
-const students= [];
+let students= [];
 
 function reqLogger(req, res, next){
     console.log('${req.method}: ${req.url}');
@@ -35,6 +35,26 @@ app.get('/api/students/:regno', (req, res) =>{
     }
     else{
         res.status(404).json({message: 'student does not exist'});
+    }
+})
+
+app.patch('/api/studnets/:regno/name', (req, res) => {
+    const {regno}= req.params;
+    const {name} = req.body;
+    students = students.map((student)=>{
+        if (student.regno === regno) {
+            student.name = name;
+        }
+        return student;
+    })
+    res.status(200).json({message: 'student updated'});
+})
+
+app.delete('/api/students/:regno',(req, res)=>{
+    const{regno}= req.params;
+    const index = students.findIndex((ele) => ele.regno === regno);
+    if (index>-1) {
+        
     }
 })
 
