@@ -1,5 +1,6 @@
 const express = require('express');
-const Student = require('./student')
+const Student = require('./student');
+const path = require ('path');
 
 const app = express();
 
@@ -13,6 +14,11 @@ function reqLogger(req, res, next){
     console.log('${req.method}: ${req.url}');
     next();
 }
+
+app.get('/',(req, res) =>{
+    res.sendFile(path.json(__dirname,'index.html'))
+})
+
 app.post('/api/students',(req,res)=>{
     console.log('here');
     const{name, dept, regno}= req.body;
@@ -54,7 +60,11 @@ app.delete('/api/students/:regno',(req, res)=>{
     const{regno}= req.params;
     const index = students.findIndex((ele) => ele.regno === regno);
     if (index>-1) {
-        
+        students.splice(index, 1);
+        res.status(200).json({message: 'student deleted'});
+    }
+    else{
+        res.status(404).json({message: 'student does not exist'});
     }
 })
 
